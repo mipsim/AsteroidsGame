@@ -1,16 +1,67 @@
-//your variable declarations here
+SpaceShip player;
+
 public void setup() 
 {
-  //your code here
+  size(400,400);
+  player = new SpaceShip();
+  player.setX(200);
+  player.setY(200);
 }
+
 public void draw() 
 {
-  //your code here
+  background(0);
+  player.show();
+  player.move();
 }
-class SpaceShip //extends Floater  
-{   
-    //your code here
+
+public void keyPressed()
+{
+  if( key == 'w' || key == 'W')
+  {
+    player.setDirectionX(10);
+    player.setDirectionY(0);
+  }
 }
+
+class SpaceShip extends Floater  
+{ 
+  public SpaceShip()
+  {
+    corners = 4;
+    int[] xS = {(int)myCenterX-8, (int)myCenterX+16, (int)myCenterX-8, (int)myCenterX-2};
+    int[] yS = {(int)myCenterY-8, (int)myCenterY, (int)myCenterY+8, (int)myCenterY}; 
+    xCorners = xS;
+    yCorners = yS;
+    myColor = 255;
+    myCenterX = 0;
+    myCenterY = 0;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
+  }
+
+  public void setX(int x) {myCenterX = x;}
+
+  public int getX() {return  (int)(myCenterX);}  
+
+  public void setY(int y) {myCenterY = y;}
+
+  public int getY() {return (int)(myCenterY);}
+
+  public void setDirectionX(double x) {myDirectionX = x;}  
+
+  public double getDirectionX() {return myDirectionX;}
+
+  public void setDirectionY(double y) {myDirectionY = y;}
+
+  public double getDirectionY() {return myDirectionY;}
+
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+
+  public double getPointDirection() {return myPointDirection;}
+}
+
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
