@@ -2,10 +2,12 @@ SpaceShip player;
 
 public void setup() 
 {
-  size(400,400);
+  size(600,600);
   player = new SpaceShip();
-  player.setX(200);
-  player.setY(200);
+  player.setX(300);
+  player.setY(300);
+  player.setDirectionX(0);
+  player.setDirectionY(0); 
 }
 
 public void draw() 
@@ -13,14 +15,33 @@ public void draw()
   background(0);
   player.show();
   player.move();
+  keyTyped();
+  System.out.println("" + player.myPointDirection);
 }
 
-public void keyPressed()
+public void keyTyped()
 {
-  if( key == 'w' || key == 'W')
-  {
-    player.setDirectionX(10);
-    player.setDirectionY(0);
+  if (keyPressed == true)
+   {
+    if( key == 'w' )
+    {
+      player.accelerate(0.03);
+    }
+    
+    else if( key == 's' )
+    {
+      player.accelerate(-0.03);
+    }
+
+    else if( key == 'd' )
+    {
+      player.rotate(10);
+    }
+
+    else if( key == 'a' )
+    {
+      player.rotate(-10);
+    }
   }
 }
 
