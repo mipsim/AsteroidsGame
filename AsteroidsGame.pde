@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Star [] stars = new Star[1000];
+Star [] stars = new Star[200];
 SpaceShip player;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public void setup() 
 {
-  size(700,700);
+  size(1080,750);
 
   for (int i = 0; i < stars.length; i++)
   {
@@ -15,8 +15,6 @@ public void setup()
   }
 
   player = new SpaceShip();
-  player.setX(350);
-  player.setY(350);
   player.setDirectionX(0);
   player.setDirectionY(0); 
 }
@@ -24,16 +22,18 @@ public void setup()
 public void draw() 
 {
   background(0);
+  player.setX(540);
+  player.setY(375);
 
   for (int i = 0; i < stars.length; i++)
   {
     stars[i].show();
+    stars[i].move();
   }
 
   keyTyped();
   player.show();
   player.move();
-  //System.out.println("" + player.myPointDirection);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,14 +44,19 @@ public void keyTyped()
    {
     if( key == 'w' || key == 'W' )
     {
-      player.accelerate(0.03);
+      player.accelerate(0.1);
     }
     
-    else if( key == 's' || key == 'S')
-    {
-      player.setDirectionX(0);
-      player.setDirectionY(0);
-    }
+    //else if( key == 's' || key == 'S')
+    //{
+    //  player.setDirectionX(0);
+    //  player.setDirectionY(0);
+    //}
+
+    //else if( key == 's' || key == 'S')
+    //{
+    //  player.hyperSpace();
+    //}
 
     else if( key == 'd' || key == 'D')
     {
@@ -94,6 +99,11 @@ class SpaceShip extends Floater
   public double getDirectionY() {return myDirectionY;}
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
+
+  //public void hyperSpace()
+  //{
+//alpha(1);
+  //}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,8 +113,8 @@ class Star extends Floater
   public Star(int arg)
   {
     myColor = 255;
-    myCenterX = (int)(Math.random()*700);
-    myCenterY = (int)(Math.random()*700);
+    myCenterX = (int)(Math.random()*1080);
+    myCenterY = (int)(Math.random()*750);
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
@@ -127,6 +137,56 @@ class Star extends Floater
     stroke(myColor);
     ellipse((int)myCenterX, (int)myCenterY, 1, 1);
   }  
+
+  public void move () 
+  {      
+    //change the x and y coordinates by myDirectionX and myDirectionY       
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+    //wrap around screen    
+    if(myCenterX >width)
+    {     
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 0;    
+    }   
+    else if (myCenterY < 0)
+    {     
+      myCenterY = height;    
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if (keyPressed == true)
+    {
+      if( key == 'w' || key == 'W' )
+      {
+        accelerate(-0.1);
+      }
+    
+      //else if( key == 's' || key == 'S')
+      //{
+      //  setDirectionX(0);
+      //  setDirectionY(0);
+      //}
+
+      else if( key == 'd' || key == 'D')
+      {
+        rotate(10);
+      }
+
+      else if( key == 'a' || key == 'A')
+      {
+        rotate(-10);
+      }
+    }   
+  } 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,6 +210,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   abstract public double getDirectionY();   
   abstract public void setPointDirection(int degrees);   
   abstract public double getPointDirection(); 
+ 
   //Accelerates the floater in the direction it is pointing (myPointDirection)   
   public void accelerate (double dAmount)   
   {          
@@ -159,11 +220,13 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     myDirectionX += ((dAmount) * Math.cos(dRadians));    
     myDirectionY += ((dAmount) * Math.sin(dRadians));       
   }   
+
   public void rotate (int nDegreesOfRotation)   
   {     
     //rotates the floater by a given number of degrees    
     myPointDirection+=nDegreesOfRotation;   
   }   
+
   public void move ()   //move the floater in the current direction of travel
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
@@ -186,7 +249,8 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     {     
       myCenterY = height;    
     }   
-  }   
+  } 
+
   public void show ()  //Draws the floater at the current position  
   {             
     fill(myColor);   
