@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Star [] stars = new Star[200];
+Star [] stars = new Star[500];
 SpaceShip player;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,6 +15,8 @@ public void setup()
   }
 
   player = new SpaceShip();
+  player.setX(540);
+  player.setY(375);
   player.setDirectionX(0);
   player.setDirectionY(0); 
 }
@@ -22,8 +24,6 @@ public void setup()
 public void draw() 
 {
   background(0);
-  player.setX(540);
-  player.setY(375);
 
   for (int i = 0; i < stars.length; i++)
   {
@@ -44,19 +44,19 @@ public void keyTyped()
    {
     if( key == 'w' || key == 'W' )
     {
-      player.accelerate(0.1);
+      player.accelerate(0.05);
+      
     }
     
-    //else if( key == 's' || key == 'S')
-    //{
-    //  player.setDirectionX(0);
-    //  player.setDirectionY(0);
-    //}
-
-    //else if( key == 's' || key == 'S')
-    //{
-    //  player.hyperSpace();
-    //}
+    else if( key == 's' || key == 'S')
+    {
+      player.setDirectionX(0);
+      player.setDirectionY(0);
+      player.setPointDirection((int)(Math.random()*360));
+      player.setX((int)(Math.random()*1080));
+      player.setY((int)(Math.random()*750));
+    }
+   
 
     else if( key == 'd' || key == 'D')
     {
@@ -99,25 +99,27 @@ class SpaceShip extends Floater
   public double getDirectionY() {return myDirectionY;}
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
-
-  //public void hyperSpace()
-  //{
-//alpha(1);
-  //}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Star extends Floater
 {
+  private int starSize;
+  private int myColor2;
+  private int myColor3;
+
   public Star(int arg)
   {
-    myColor = 255;
+    myColor = (int)(Math.random()*255);
+    myColor2 = (int)(Math.random()*255);
+    myColor3 = (int)(Math.random()*255);
     myCenterX = (int)(Math.random()*1080);
     myCenterY = (int)(Math.random()*750);
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
+    starSize = (int)(Math.random()*3);
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -133,9 +135,9 @@ class Star extends Floater
 
   public void show()
   {
-    fill(myColor);
-    stroke(myColor);
-    ellipse((int)myCenterX, (int)myCenterY, 1, 1);
+    fill(myColor,myColor2,myColor3);
+    noStroke();
+    ellipse((int)myCenterX, (int)myCenterY, starSize, starSize);
   }  
 
   public void move () 
@@ -167,14 +169,8 @@ class Star extends Floater
     {
       if( key == 'w' || key == 'W' )
       {
-        accelerate(-0.1);
+        accelerate(-0.01);
       }
-    
-      //else if( key == 's' || key == 'S')
-      //{
-      //  setDirectionX(0);
-      //  setDirectionY(0);
-      //}
 
       else if( key == 'd' || key == 'D')
       {
