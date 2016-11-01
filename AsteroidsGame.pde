@@ -1,7 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Star [] stars = new Star[500];
+Asteroid [] asteroids = new Asteroid[15];
 SpaceShip player;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -12,6 +14,11 @@ public void setup()
   for (int i = 0; i < stars.length; i++)
   {
     stars[i] = new Star(i);
+  }
+
+  for (int i = 0; i < asteroids.length; i++)
+  {
+    asteroids[i] = new Asteroid(i);
   }
 
   player = new SpaceShip();
@@ -29,6 +36,13 @@ public void draw()
   {
     stars[i].show();
     stars[i].move();
+  }
+
+  for (int i = 0; i < asteroids.length; i++)
+  {
+    asteroids[i].show();
+    asteroids[i].move();
+    asteroids[i].accelerate(0.002);
   }
 
   keyTyped();
@@ -133,56 +147,70 @@ class Star extends Floater
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
 
+  public void move () 
+  {      
+    if (keyPressed == true)
+    {
+      if( key == 'w' || key == 'W' )
+      {
+        accelerate(-0.005);
+      }
+    }
+
+    super.move();   
+  }
+
   public void show()
   {
     fill(myColor,myColor2,myColor3);
     noStroke();
     ellipse((int)myCenterX, (int)myCenterY, starSize, starSize);
-  }  
+  }   
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Asteroid extends Floater
+{
+  private int astRotation;
+
+  public Asteroid(int arg)
+  {
+    corners = 6;
+    int[] xS = {(int)myCenterX-9, (int)myCenterX-21, (int)myCenterX-9, (int)myCenterX+9, (int)myCenterX+21, (int)myCenterX+9};
+    int[] yS = {(int)myCenterY-18, (int)myCenterY, (int)myCenterY+18, (int)myCenterY+18, (int)myCenterY, (int)myCenterY-18}; 
+    xCorners = xS;
+    yCorners = yS;
+    myColor = 255;
+    myCenterX = (int)(Math.random()*1080);
+    myCenterY = (int)(Math.random()*750);
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
+    astRotation = (int)(Math.random()*3-1);
+  }
+
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return  (int)(myCenterX);}  
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int)(myCenterY);}
+  public void setDirectionX(double x) {myDirectionX = x;}  
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
 
   public void move () 
-  {      
-    //change the x and y coordinates by myDirectionX and myDirectionY       
-    myCenterX += myDirectionX;    
-    myCenterY += myDirectionY;     
-    //wrap around screen    
-    if(myCenterX >width)
-    {     
-      myCenterX = 0;    
-    }    
-    else if (myCenterX<0)
-    {     
-      myCenterX = width;    
-    }    
-    if(myCenterY >height)
-    {    
-      myCenterY = 0;    
-    }   
-    else if (myCenterY < 0)
-    {     
-      myCenterY = height;    
+  { 
+    if (astRotation == 0)
+    {
+      astRotation = -1;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    if (keyPressed == true)
-    {
-      if( key == 'w' || key == 'W' )
-      {
-        accelerate(-0.01);
-      }
-
-      else if( key == 'd' || key == 'D')
-      {
-        rotate(10);
-      }
-
-      else if( key == 'a' || key == 'A')
-      {
-        rotate(-10);
-      }
-    }   
-  } 
+    rotate(astRotation);
+    super.move();   
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
