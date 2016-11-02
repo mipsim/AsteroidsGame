@@ -153,8 +153,18 @@ class Star extends Floater
     {
       if( key == 'w' || key == 'W' )
       {
-        accelerate(-0.005);
+        accelerate(-0.004);
       }
+    }
+
+    else if( key == 'd' || key == 'D')
+    {
+      rotate(10);
+    }
+
+    else if( key == 'a' || key == 'A')
+    {
+      rotate(-10);
     }
 
     super.move();   
@@ -181,7 +191,7 @@ class Asteroid extends Floater
     int[] yS = {(int)myCenterY-18, (int)myCenterY, (int)myCenterY+18, (int)myCenterY+18, (int)myCenterY, (int)myCenterY-18}; 
     xCorners = xS;
     yCorners = yS;
-    myColor = 255;
+    myColor = (int)(Math.random()*75+75);
     myCenterX = (int)(Math.random()*1080);
     myCenterY = (int)(Math.random()*750);
     myDirectionX = 0;
