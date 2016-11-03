@@ -1,9 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Star [] stars = new Star[500];
-Asteroid [] asteroids = new Asteroid[15];
-SpaceShip player;
 
+Asteroid [] asteroids = new Asteroid[15];
+
+SpaceShip player;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -115,6 +116,7 @@ class SpaceShip extends Floater
   public double getPointDirection() {return myPointDirection;}
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Star extends Floater
@@ -183,11 +185,12 @@ class Star extends Floater
 class Asteroid extends Floater
 {
   private int astRotation;
+  //private int [] astSize = new int[6];
 
   public Asteroid(int arg)
   {
     corners = 6;
-    int[] xS = {(int)myCenterX-9, (int)myCenterX-21, (int)myCenterX-9, (int)myCenterX+9, (int)myCenterX+21, (int)myCenterX+9};
+    int[] xS = {(int)myCenterX-12, (int)myCenterX-21, (int)myCenterX-12, (int)myCenterX+12, (int)myCenterX+21, (int)myCenterX+12};
     int[] yS = {(int)myCenterY-18, (int)myCenterY, (int)myCenterY+18, (int)myCenterY+18, (int)myCenterY, (int)myCenterY-18}; 
     xCorners = xS;
     yCorners = yS;
@@ -197,7 +200,14 @@ class Asteroid extends Floater
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
+    
     astRotation = (int)(Math.random()*3-1);
+    //astSize[0] = 12;
+    //astSize[1] = 22;
+    //astSize[2] = 18;
+    //astSize[3] = 28;
+    //astSize[4] = 21;
+    //astSize[5] = 31;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -221,6 +231,13 @@ class Asteroid extends Floater
     rotate(astRotation);
     super.move();   
   }
+
+  //public void show()
+  //{
+  //  int[] xS = {(int)myCenterX-(int)(Math.random()*2), (int)myCenterX-(int)(Math.random()*4), (int)myCenterX-(int)(Math.random()*2), (int)myCenterX+(int)(Math.random()*2), (int)myCenterX+(int)(Math.random()*4), (int)myCenterX+(int)(Math.random()*2)};
+  //  int[] yS = {(int)myCenterY-(int)(Math.random()*2+2), (int)myCenterY, (int)myCenterY+(int)(Math.random()*2+2), (int)myCenterY+(int)(Math.random()*2+2), (int)myCenterY, (int)myCenterY-(int)(Math.random()*2+2)};
+  //  super.show();
+  //}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
