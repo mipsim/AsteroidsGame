@@ -1,10 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Star [] stars = new Star[500];
+Star [] stars = new Star[600];
 
 Asteroid [] asteroids = new Asteroid[15];
 
 SpaceShip player;
+
+JetAnim jets;
+//JetAnim incomplete
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,6 +26,7 @@ public void setup()
   }
 
   player = new SpaceShip();
+  jets = new JetAnim();
   player.setX(540);
   player.setY(375);
   player.setDirectionX(0);
@@ -60,7 +64,7 @@ public void keyTyped()
     if( key == 'w' || key == 'W' )
     {
       player.accelerate(0.05);
-      
+      jets.setDirectionX(player.myCenterX - 10);
     }
     
     else if( key == 's' || key == 'S')
@@ -92,7 +96,7 @@ class SpaceShip extends Floater
   public SpaceShip()
   {
     corners = 4;
-    int[] xS = {(int)myCenterX-8, (int)myCenterX+16, (int)myCenterX-8, (int)myCenterX-2};
+    int[] xS = {(int)myCenterX-8, (int)myCenterX+18, (int)myCenterX-8, (int)myCenterX-5};
     int[] yS = {(int)myCenterY-8, (int)myCenterY, (int)myCenterY+8, (int)myCenterY}; 
     xCorners = xS;
     yCorners = yS;
@@ -185,7 +189,6 @@ class Star extends Floater
 class Asteroid extends Floater
 {
   private int astRotation;
-  //private int [] astSize = new int[6];
 
   public Asteroid(int arg)
   {
@@ -202,12 +205,6 @@ class Asteroid extends Floater
     myPointDirection = 0;
     
     astRotation = (int)(Math.random()*3-1);
-    //astSize[0] = 12;
-    //astSize[1] = 22;
-    //astSize[2] = 18;
-    //astSize[3] = 28;
-    //astSize[4] = 21;
-    //astSize[5] = 31;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -231,16 +228,58 @@ class Asteroid extends Floater
     rotate(astRotation);
     super.move();   
   }
-
-  //public void show()
-  //{
-  //  int[] xS = {(int)myCenterX-(int)(Math.random()*2), (int)myCenterX-(int)(Math.random()*4), (int)myCenterX-(int)(Math.random()*2), (int)myCenterX+(int)(Math.random()*2), (int)myCenterX+(int)(Math.random()*4), (int)myCenterX+(int)(Math.random()*2)};
-  //  int[] yS = {(int)myCenterY-(int)(Math.random()*2+2), (int)myCenterY, (int)myCenterY+(int)(Math.random()*2+2), (int)myCenterY+(int)(Math.random()*2+2), (int)myCenterY, (int)myCenterY-(int)(Math.random()*2+2)};
-  //  super.show();
-  //}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class JetAnim extends Floater
+{
+  public JetAnim()
+  {
+    myCenterX = 0;
+    myCenterY = 0;;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
+  }
+
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return  (int)(myCenterX);}  
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int)(myCenterY);}
+  public void setDirectionX(double x) {myDirectionX = x;}  
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
+
+  public void move () 
+  { 
+    if( key == 'd' || key == 'D')
+    {
+      rotate(10);
+    }
+
+    else if( key == 'a' || key == 'A')
+    {
+      rotate(-10);
+    }
+
+    super.move();   
+  }
+
+  public void show()
+  {
+    fill(0,100,255);
+    noStroke();
+    ellipse((int)myCenterX, (int)myCenterY, 10,10);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
