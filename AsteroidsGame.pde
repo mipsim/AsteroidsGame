@@ -2,12 +2,9 @@
 
 Star [] stars = new Star[600];
 
-Asteroid [] asteroids = new Asteroid[15];
+ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
 
 SpaceShip player;
-
-JetAnim jets;
-//JetAnim incomplete
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,13 +17,13 @@ public void setup()
     stars[i] = new Star(i);
   }
 
-  for (int i = 0; i < asteroids.length; i++)
+  for (int i = 0; i < astList.size(); i++)
   {
-    asteroids[i] = new Asteroid(i);
+    Asteroid asteroids = new Asteroid(i);
+    astList.add(asteroids);
   }
 
   player = new SpaceShip();
-  jets = new JetAnim();
   player.setX(540);
   player.setY(375);
   player.setDirectionX(0);
@@ -43,13 +40,6 @@ public void draw()
     stars[i].move();
   }
 
-  for (int i = 0; i < asteroids.length; i++)
-  {
-    asteroids[i].show();
-    asteroids[i].move();
-    asteroids[i].accelerate(0.002);
-  }
-
   keyTyped();
   player.show();
   player.move();
@@ -64,7 +54,6 @@ public void keyTyped()
     if( key == 'w' || key == 'W' )
     {
       player.accelerate(0.05);
-      jets.setDirectionX(player.myCenterX - 10);
     }
     
     else if( key == 's' || key == 'S')
@@ -230,55 +219,8 @@ class Asteroid extends Floater
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class JetAnim extends Floater
-{
-  public JetAnim()
-  {
-    myCenterX = 0;
-    myCenterY = 0;;
-    myDirectionX = 0;
-    myDirectionY = 0;
-    myPointDirection = 0;
-  }
-
-  public void setX(int x) {myCenterX = x;}
-  public int getX() {return  (int)(myCenterX);}  
-  public void setY(int y) {myCenterY = y;}
-  public int getY() {return (int)(myCenterY);}
-  public void setDirectionX(double x) {myDirectionX = x;}  
-  public double getDirectionX() {return myDirectionX;}
-  public void setDirectionY(double y) {myDirectionY = y;}
-  public double getDirectionY() {return myDirectionY;}
-  public void setPointDirection(int degrees) {myPointDirection = degrees;}
-  public double getPointDirection() {return myPointDirection;}
-
-  public void move () 
-  { 
-    if( key == 'd' || key == 'D')
-    {
-      rotate(10);
-    }
-
-    else if( key == 'a' || key == 'A')
-    {
-      rotate(-10);
-    }
-
-    super.move();   
-  }
-
-  public void show()
-  {
-    fill(0,100,255);
-    noStroke();
-    ellipse((int)myCenterX, (int)myCenterY, 10,10);
-  }
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
