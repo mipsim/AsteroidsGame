@@ -2,7 +2,10 @@
 
 Star [] stars = new Star[600];
 
-ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
+Asteroid [] asteroids = new Asteroid[15];
+
+//ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
+//Asteroid bob = new Asteroid();
 
 SpaceShip player;
 
@@ -17,17 +20,18 @@ public void setup()
     stars[i] = new Star(i);
   }
 
-  for (int i = 0; i < astList.size(); i++)
-  {
-    Asteroid asteroids = new Asteroid(i);
-    astList.add(asteroids);
-  }
-
   player = new SpaceShip();
   player.setX(540);
   player.setY(375);
   player.setDirectionX(0);
   player.setDirectionY(0); 
+
+  for (int i = 0; i < asteroids.length; i++)
+  {
+    asteroids[i] = new Asteroid(i);
+  }
+
+  //astList.add(bob);
 }
 
 public void draw() 
@@ -43,6 +47,15 @@ public void draw()
   keyTyped();
   player.show();
   player.move();
+
+  for (int i = 0; i < asteroids.length; i++)
+  {
+    asteroids[i].show();
+    asteroids[i].move();
+  }
+
+  //bob.show();
+  //bob.move();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
