@@ -78,7 +78,6 @@ public void keyTyped()
       player.setY((int)(Math.random()*750));
     }
    
-
     else if( key == 'd' || key == 'D')
     {
       player.rotate(10);
@@ -232,9 +231,7 @@ class Asteroid extends Floater
   }
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
