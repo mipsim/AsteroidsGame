@@ -2,10 +2,7 @@
 
 Star [] stars = new Star[600];
 
-Asteroid [] asteroids = new Asteroid[15];
-
-//ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
-//Asteroid bob = new Asteroid();
+ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
 
 SpaceShip player;
 
@@ -26,12 +23,20 @@ public void setup()
   player.setDirectionX(0);
   player.setDirectionY(0); 
 
-  for (int i = 0; i < asteroids.length; i++)
+  for (int i = 0; i < 15; i++)
   {
-    asteroids[i] = new Asteroid(i);
+    astList.add(new Asteroid());
   }
 
-  //astList.add(bob);
+  for (Asteroid asteroids : astList)
+  {
+    asteroids.setDirectionX((int)(Math.random()*3-1));
+    if (asteroids.myDirectionX == 0) {asteroids.setDirectionX(-1);}
+
+    asteroids.setDirectionY((int)(Math.random()*3-1));
+    if (asteroids.myDirectionY == 0) {asteroids.setDirectionY(-1);}
+  }
+  
 }
 
 public void draw() 
@@ -48,14 +53,11 @@ public void draw()
   player.show();
   player.move();
 
-  for (int i = 0; i < asteroids.length; i++)
+  for (Asteroid asteroids : astList)
   {
-    asteroids[i].show();
-    asteroids[i].move();
+    asteroids.show();
+    asteroids.move();
   }
-
-  //bob.show();
-  //bob.move();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +193,7 @@ class Asteroid extends Floater
 {
   private int astRotation;
 
-  public Asteroid(int arg)
+  public Asteroid()
   {
     corners = 6;
     int[] xS = {(int)myCenterX-12, (int)myCenterX-21, (int)myCenterX-12, (int)myCenterX+12, (int)myCenterX+21, (int)myCenterX+12};
