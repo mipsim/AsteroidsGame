@@ -57,6 +57,14 @@ public void draw()
     asteroids.show();
     asteroids.move();
   }
+
+  //for (int i = 0; i < 15; i++)
+  //{
+  //  if (dist((int)player.getX(), (int)player.getY(), astList.get(i), astList.get(i)) < 20)
+  //  {
+  //    astList.remove(i);
+  //  }
+  //}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +199,6 @@ class Star extends Floater
 class Asteroid extends Floater
 {
   private int astRotation;
-  private boolean touching;
 
   public Asteroid()
   {
@@ -207,7 +214,6 @@ class Asteroid extends Floater
     myDirectionY = 0;
     myPointDirection = 0;
     astRotation = (int)(Math.random()*3-1);
-    touching = false;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -231,9 +237,6 @@ class Asteroid extends Floater
     rotate(astRotation);
     super.move();   
   }
-
-  public void setTouchStatusTrue() {touching = true;}
-  public void setTouchStatusFalse() {touching = false;}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
