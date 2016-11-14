@@ -26,15 +26,12 @@ public void setup()
   for (int i = 0; i < 15; i++)
   {
     astList.add(new Asteroid());
-  }
 
-  for (Asteroid asteroids : astList)
-  {
-    asteroids.setDirectionX((int)(Math.random()*3-1));
-    if (asteroids.myDirectionX == 0) {asteroids.setDirectionX(-1);}
+    astList.get(i).setDirectionX((int)(Math.random()*3-1));
+    if (astList.get(i).myDirectionX == 0) {astList.get(i).setDirectionX(-1);}
 
-    asteroids.setDirectionY((int)(Math.random()*3-1));
-    if (asteroids.myDirectionY == 0) {asteroids.setDirectionY(-1);}
+    astList.get(i).setDirectionY((int)(Math.random()*3-1));
+    if (astList.get(i).myDirectionY == 0) {astList.get(i).setDirectionY(-1);}
   }
 }
 
@@ -52,19 +49,19 @@ public void draw()
   player.show();
   player.move();
 
-  for (Asteroid asteroids : astList)
+  for(int i = 0; i < astList.size(); i++) 
   {
-    asteroids.show();
-    asteroids.move();
+    if (dist((int)player.myCenterX, (int)player.myCenterY, (int)astList.get(i).myCenterX, (int)astList.get(i).myCenterY) < 35)
+    {
+      astList.remove(i);
+      i--;
+    }
+    else 
+    {
+      astList.get(i).show();
+      astList.get(i).move();
+    }
   }
-
-  //for (int i = 0; i < 15; i++)
-  //{
-  //  if (dist((int)player.getX(), (int)player.getY(), astList.get(i), astList.get(i)) < 20)
-  //  {
-  //    astList.remove(i);
-  //  }
-  //}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
