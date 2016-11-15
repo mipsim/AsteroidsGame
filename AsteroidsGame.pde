@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////--GLOBAL--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Star [] stars = new Star[600];
 
@@ -6,23 +6,33 @@ ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
 
 SpaceShip player;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ArrayList <Bullet> bulletList = new ArrayList <Bullet>();
+
+
+/////////////////////////////////////////////////////////////////--SETUP--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 public void setup() 
 {
   size(1080,750);
 
+
+  //STARS//
   for (int i = 0; i < stars.length; i++)
   {
     stars[i] = new Star(i);
   }
 
+
+  //PLAYERS//
   player = new SpaceShip();
   player.setX(540);
   player.setY(375);
   player.setDirectionX(0);
   player.setDirectionY(0); 
 
+
+  //ASTEROIDS//
   for (int i = 0; i < 16; i++)
   {
     astList.add(new Asteroid());
@@ -35,20 +45,40 @@ public void setup()
   }
 }
 
+
+//////////////////////////////////////////////////////////////////--DRAW--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 public void draw() 
 {
   background(0);
 
+
+  keyTyped();
+
+
+  //STARS//
   for (int i = 0; i < stars.length; i++)
   {
     stars[i].show();
     stars[i].move();
+  }  
+  
+
+  //BULLETS//
+  for(int i = 0; i < bulletList.size(); i++)
+  {
+    bulletList.get(i).show();
+    bulletList.get(i).move();
   }
 
-  keyTyped();
+
+  //SHIP//
   player.show();
   player.move();
 
+
+  //ASTEROIDS//
   for(int i = 0; i < astList.size(); i++) 
   {
     if (dist((int)player.myCenterX, (int)player.myCenterY, (int)astList.get(i).myCenterX, (int)astList.get(i).myCenterY) < 35)
@@ -64,17 +94,18 @@ public void draw()
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////--FUNCTIONS--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 public void keyTyped()
 {
   if (keyPressed == true)
    {
     if( key == 'w' || key == 'W' )
-    {
-      player.accelerate(0.05);
-    }
+    {  player.accelerate(0.05); }
     
+
     else if( key == 's' || key == 'S')
     {
       player.setDirectionX(0);
@@ -84,19 +115,26 @@ public void keyTyped()
       player.setY((int)(Math.random()*750));
     }
    
+
     else if( key == 'd' || key == 'D')
-    {
-      player.rotate(10);
-    }
+    {  player.rotate(10); }
+
 
     else if( key == 'a' || key == 'A')
-    {
-      player.rotate(-10);
-    }
+    {  player.rotate(-10); }
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+public void mousePressed()
+{
+  if (mousePressed == true)
+  {  bulletList.add(new Bullet(player)); }
+}
+
+
+/////////////////////////////////////////////////////////////////--CLASSES--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 class SpaceShip extends Floater  
 { 
@@ -129,6 +167,7 @@ class SpaceShip extends Floater
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 class Star extends Floater
 {
@@ -191,7 +230,9 @@ class Star extends Floater
   }   
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 class Asteroid extends Floater
 {
@@ -232,11 +273,61 @@ class Asteroid extends Floater
     }
 
     rotate(astRotation);
+
     super.move();   
   }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+class Bullet extends Floater
+{
+  private int bulletSize;
+
+  public Bullet(SpaceShip theShip)
+  {
+    myColor = 0;
+    myCenterX = theShip.myCenterX;
+    myCenterY = theShip.myCenterY;
+    myPointDirection = theShip.myPointDirection;
+    double dRadians =myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + theShip.myDirectionX;
+    myDirectionY = 5 * Math.sin(dRadians) + theShip.myDirectionY;
+
+
+    bulletSize = 10;
+  }
+
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return  (int)(myCenterX);}  
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int)(myCenterY);}
+  public void setDirectionX(double x) {myDirectionX = x;}  
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
+
+  public void show()
+  {
+    fill(255,0,0);
+    noStroke();
+    ellipse((int)myCenterX, (int)myCenterY, bulletSize, bulletSize);
+  }
+
+  public void move()
+  {
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY; 
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
