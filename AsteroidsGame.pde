@@ -23,7 +23,7 @@ public void setup()
   player.setDirectionX(0);
   player.setDirectionY(0); 
 
-  for (int i = 0; i < 15; i++)
+  for (int i = 0; i < 16; i++)
   {
     astList.add(new Asteroid());
 
