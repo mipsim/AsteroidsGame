@@ -55,6 +55,7 @@ public void draw()
 
 
   keyTyped();
+  //mousePressed();
 
 
   //STARS//
@@ -81,7 +82,8 @@ public void draw()
   //ASTEROIDS//
   for(int i = 0; i < astList.size(); i++) 
   {
-    if (dist((int)player.myCenterX, (int)player.myCenterY, (int)astList.get(i).myCenterX, (int)astList.get(i).myCenterY) < 35)
+    //Prevents player from losing/taking damage if touches asteroid while in hyperspace
+    if (player.inHyperSpace == false && dist((int)player.myCenterX, (int)player.myCenterY, (int)astList.get(i).myCenterX, (int)astList.get(i).myCenterY) < 35 )
     {
       astList.remove(i);
       i--;
@@ -108,6 +110,7 @@ public void keyTyped()
 
     else if( key == 's' || key == 'S')
     {
+      player.inHyperSpace = true;
       player.setDirectionX(0);
       player.setDirectionY(0);
       player.setPointDirection((int)(Math.random()*360));
@@ -123,6 +126,8 @@ public void keyTyped()
     else if( key == 'a' || key == 'A')
     {  player.rotate(-10); }
   }
+  else 
+    {player.inHyperSpace = false;}
 }
 
 
@@ -138,6 +143,8 @@ public void mousePressed()
 
 class SpaceShip extends Floater  
 { 
+  private boolean inHyperSpace;
+
   public SpaceShip()
   {
     corners = 4;
@@ -151,6 +158,8 @@ class SpaceShip extends Floater
     myDirectionX = 0;
     myDirectionY = 0;
     myPointDirection = 0;
+
+    inHyperSpace = false;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -278,17 +287,69 @@ class Asteroid extends Floater
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+class Asteroidbits extends Floater
+{
+  private int astRotation;
+
+  public Asteroidbits()
+  {
+    corners = 6;
+    int[] xS = {(int)myCenterX-6, (int)myCenterX-15, (int)myCenterX-6, (int)myCenterX+6, (int)myCenterX+15, (int)myCenterX+6};
+    int[] yS = {(int)myCenterY-12, (int)myCenterY, (int)myCenterY+12, (int)myCenterY+12, (int)myCenterY, (int)myCenterY-12}; 
+    xCorners = xS;
+    yCorners = yS;
+    myColor = (int)(Math.random()*75+75);
+    myCenterX = (int)(Math.random()*1080);
+    myCenterY = (int)(Math.random()*750);
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
+    astRotation = (int)(Math.random()*3-1);
+  }
+
+  public void setX(int x) {myCenterX = x;}
+  public int getX() {return  (int)(myCenterX);}  
+  public void setY(int y) {myCenterY = y;}
+  public int getY() {return (int)(myCenterY);}
+  public void setDirectionX(double x) {myDirectionX = x;}  
+  public double getDirectionX() {return myDirectionX;}
+  public void setDirectionY(double y) {myDirectionY = y;}
+  public double getDirectionY() {return myDirectionY;}
+  public void setPointDirection(int degrees) {myPointDirection = degrees;}
+  public double getPointDirection() {return myPointDirection;}
+
+  public void move () 
+  { 
+    if (astRotation == 0)
+    {
+      astRotation = -1;
+    }
+
+    rotate(astRotation);
+
+    super.move();   
+  }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 class Bullet extends Floater
 {
-  private int bulletSize;
+  private int bulletRotation;
 
   public Bullet(SpaceShip theShip)
   {
-    myColor = 0;
+    corners = 4;
+    int[] xS = {(int)myCenterX-4, (int)myCenterX+8, (int)myCenterX+4, (int)myCenterX-8};
+    int[] yS = {(int)myCenterY-4, (int)myCenterY-4, (int)myCenterY+4, (int)myCenterY+4}; 
+    xCorners = xS;
+    yCorners = yS;
+    myColor = 255;
     myCenterX = theShip.myCenterX;
     myCenterY = theShip.myCenterY;
     myPointDirection = theShip.myPointDirection;
@@ -296,8 +357,7 @@ class Bullet extends Floater
     myDirectionX = 5 * Math.cos(dRadians) + theShip.myDirectionX;
     myDirectionY = 5 * Math.sin(dRadians) + theShip.myDirectionY;
 
-
-    bulletSize = 10;
+    bulletRotation = 100;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -313,15 +373,26 @@ class Bullet extends Floater
 
   public void show()
   {
-    fill(255,0,0);
-    noStroke();
-    ellipse((int)myCenterX, (int)myCenterY, bulletSize, bulletSize);
+    fill(0,255,255);
+    noStroke();               
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+    beginShape();         
+    for(int nI = 0; nI < corners; nI++)    
+    {     
+      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);
   }
 
   public void move()
   {
     myCenterX += myDirectionX;    
-    myCenterY += myDirectionY; 
+    myCenterY += myDirectionY;
+
+    rotate(bulletRotation); 
   }
 }
 
