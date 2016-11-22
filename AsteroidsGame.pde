@@ -59,18 +59,18 @@ public void draw()
 
 
   //STARS//
-  for (int i = 0; i < stars.length; i++)
+  for (Star starTemp : stars)
   {
-    stars[i].show();
-    stars[i].move();
+    starTemp.show();
+    starTemp.move();
   }  
   
 
   //BULLETS//
-  for(int i = 0; i < bulletList.size(); i++)
+  for(Bullet bullets : bulletList)
   {
-    bulletList.get(i).show();
-    bulletList.get(i).move();
+    bullets.show();
+    bullets.move();
   }
 
 
@@ -88,6 +88,7 @@ public void draw()
       astList.remove(i);
       i--;
     }
+
     else 
     {
       astList.get(i).show();
@@ -250,55 +251,10 @@ class Asteroid extends Floater
   public Asteroid()
   {
     corners = 6;
-    int[] xS = {(int)myCenterX-12, (int)myCenterX-21, (int)myCenterX-12, (int)myCenterX+12, (int)myCenterX+21, (int)myCenterX+12};
-    int[] yS = {(int)myCenterY-18, (int)myCenterY, (int)myCenterY+18, (int)myCenterY+18, (int)myCenterY, (int)myCenterY-18}; 
-    xCorners = xS;
-    yCorners = yS;
-    myColor = (int)(Math.random()*75+75);
-    myCenterX = (int)(Math.random()*1080);
-    myCenterY = (int)(Math.random()*750);
-    myDirectionX = 0;
-    myDirectionY = 0;
-    myPointDirection = 0;
-    astRotation = (int)(Math.random()*3-1);
-  }
-
-  public void setX(int x) {myCenterX = x;}
-  public int getX() {return  (int)(myCenterX);}  
-  public void setY(int y) {myCenterY = y;}
-  public int getY() {return (int)(myCenterY);}
-  public void setDirectionX(double x) {myDirectionX = x;}  
-  public double getDirectionX() {return myDirectionX;}
-  public void setDirectionY(double y) {myDirectionY = y;}
-  public double getDirectionY() {return myDirectionY;}
-  public void setPointDirection(int degrees) {myPointDirection = degrees;}
-  public double getPointDirection() {return myPointDirection;}
-
-  public void move () 
-  { 
-    if (astRotation == 0)
-    {
-      astRotation = -1;
-    }
-
-    rotate(astRotation);
-
-    super.move();   
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-class Asteroidbits extends Floater
-{
-  private int astRotation;
-
-  public Asteroidbits()
-  {
-    corners = 6;
-    int[] xS = {(int)myCenterX-6, (int)myCenterX-15, (int)myCenterX-6, (int)myCenterX+6, (int)myCenterX+15, (int)myCenterX+6};
-    int[] yS = {(int)myCenterY-12, (int)myCenterY, (int)myCenterY+12, (int)myCenterY+12, (int)myCenterY, (int)myCenterY-12}; 
+    int[] xS = {(int)myCenterX-(int)(Math.random()*12), (int)myCenterX-(int)(Math.random()*21), (int)myCenterX-(int)(Math.random()*12), 
+                (int)myCenterX+(int)(Math.random()*12), (int)myCenterX+(int)(Math.random()*21), (int)myCenterX+(int)(Math.random()*12)};
+    int[] yS = {(int)myCenterY-(int)(Math.random()*18), (int)myCenterY, (int)myCenterY+(int)(Math.random()*18),
+                (int)myCenterY+(int)(Math.random()*18), (int)myCenterY, (int)myCenterY-(int)(Math.random()*18)}; 
     xCorners = xS;
     yCorners = yS;
     myColor = (int)(Math.random()*75+75);
