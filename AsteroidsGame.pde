@@ -7,6 +7,8 @@ ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
 
 SpaceShip player;
 
+SpaceShip life;
+
 ArrayList <Bullet> bulletList = new ArrayList <Bullet>();
 
 
@@ -17,6 +19,13 @@ public void setup()
 {
   size(1080,750);
 
+  //INTERFACE//
+  life = new SpaceShip();
+  life.setX(30);
+  life.setY(70);
+  life.setDirectionX(0);
+  life.setDirectionY(0);
+
 
   //STARS//
   for (int i = 0; i < stars.length; i++)
@@ -25,7 +34,7 @@ public void setup()
   }
 
 
-  //PLAYERS//
+  //PLAYER//
   player = new SpaceShip();
   player.setX(540);
   player.setY(375);
@@ -39,10 +48,10 @@ public void setup()
     astList.add(new Asteroid());
 
     astList.get(i).setDirectionX((int)(Math.random()*3-1));
-    if (astList.get(i).myDirectionX == 0) {astList.get(i).setDirectionX(-1);}
+    if (astList.get(i).getDirectionX() == 0) {astList.get(i).setDirectionX(-1);}
 
     astList.get(i).setDirectionY((int)(Math.random()*3-1));
-    if (astList.get(i).myDirectionY == 0) {astList.get(i).setDirectionY(-1);}
+    if (astList.get(i).getDirectionY() == 0) {astList.get(i).setDirectionY(-1);}
   }
 }
 
@@ -78,13 +87,22 @@ public void draw()
   //SHIP//
   player.show();
   player.move();
+  if (player.getHyperStatus() == true)
+  {
+    player.setColor(60);
+  } 
+  else
+  {
+    player.setColor(255);
+  }
 
 
   //ASTEROIDS//
   for(int i = 0; i < astList.size(); i++) 
   {
     //Prevents player from losing/taking damage if touches asteroid while in hyperspace
-    if (player.inHyperSpace == false && dist((int)player.myCenterX, (int)player.myCenterY, (int)astList.get(i).myCenterX, (int)astList.get(i).myCenterY) < 35 )
+    if (player.getHyperStatus() == false && dist((int)player.getX(), (int)player.getY(), 
+       (int)astList.get(i).getX(), (int)astList.get(i).getY()) < 35 )
     {
       astList.remove(i);
       i--;
@@ -96,6 +114,17 @@ public void draw()
       astList.get(i).move();
     }
   }
+
+  //INTERFACE//
+  textSize(40);
+  fill(255);
+  text("HEALTH", 20, 40); 
+  
+  for(int i = 0; i < 5; i++)
+  {
+    life.show();
+  }
+
 }
 
 
@@ -112,7 +141,7 @@ public void keyTyped()
 
     else if( key == 's' || key == 'S')
     {
-      player.inHyperSpace = true;
+      player.setHyperStatus(true);
       player.setDirectionX(0);
       player.setDirectionY(0);
       player.setPointDirection((int)(Math.random()*360));
@@ -129,12 +158,18 @@ public void keyTyped()
     {  player.rotate(-10); }
   }
   else 
-    {player.inHyperSpace = false;}
+    {
+      player.setHyperStatus(false);
+    }
 }
 
 
 public void mousePressed()
 {
-  if (mousePressed == true)
+  //prevent shooting while in hyperspace
+  if (mousePressed == true && player.getHyperStatus() == false)
   {  bulletList.add(new Bullet(player)); }
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

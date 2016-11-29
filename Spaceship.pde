@@ -4,6 +4,7 @@
 class SpaceShip extends Floater  
 { 
   private boolean inHyperSpace;
+  private boolean collision;
 
   public SpaceShip()
   {
@@ -20,6 +21,7 @@ class SpaceShip extends Floater
     myPointDirection = 0;
 
     inHyperSpace = false;
+    collision = false;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -32,6 +34,10 @@ class SpaceShip extends Floater
   public double getDirectionY() {return myDirectionY;}
   public void setPointDirection(int degrees) {myPointDirection = degrees;}
   public double getPointDirection() {return myPointDirection;}
+  public void setColor(int x) {myColor = x;}
+  public void setHyperStatus (boolean x) {inHyperSpace = x;} 
+  public boolean getHyperStatus () {return inHyperSpace;} 
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
