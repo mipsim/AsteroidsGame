@@ -7,7 +7,7 @@ ArrayList <Asteroid> astList = new ArrayList <Asteroid>();
 
 SpaceShip player;
 
-SpaceShip life;
+ArrayList <SpaceShip> lifeList = new ArrayList <SpaceShip>();
 
 ArrayList <Bullet> bulletList = new ArrayList <Bullet>();
 
@@ -20,12 +20,21 @@ public void setup()
   size(1080,750);
 
   //INTERFACE//
-  life = new SpaceShip();
-  life.setX(30);
-  life.setY(70);
-  life.setDirectionX(0);
-  life.setDirectionY(0);
 
+  for (int i = 0; i < 5; i++)
+  {
+    lifeList.add(new SpaceShip());
+    lifeList.get(i).setY(90);
+    lifeList.get(i).setDirectionX(0);
+    lifeList.get(i).setDirectionY(0);
+  }
+
+  lifeList.get(0).setX(30);
+  lifeList.get(1).setX(70);
+  lifeList.get(2).setX(110);
+  lifeList.get(3).setX(150);
+  lifeList.get(4).setX(190);
+  
 
   //STARS//
   for (int i = 0; i < stars.length; i++)
@@ -89,7 +98,7 @@ public void draw()
   player.move();
   if (player.getHyperStatus() == true)
   {
-    player.setColor(60);
+    player.setColor(100);
   } 
   else
   {
@@ -106,6 +115,7 @@ public void draw()
     {
       astList.remove(i);
       i--;
+      lifeList.get(0).setHealth(lifeList.get(0).getHealth()-1);
     }
 
     else 
@@ -116,14 +126,45 @@ public void draw()
   }
 
   //INTERFACE//
-  textSize(40);
+  textSize(52);
   fill(255);
-  text("HEALTH", 20, 40); 
-  
-  for(int i = 0; i < 5; i++)
+  text("HEALTH", 15, 60); 
+
+  if (lifeList.get(0).getHealth() == 5)
   {
-    life.show();
+    lifeList.get(0).show();
+    lifeList.get(1).show();
+    lifeList.get(2).show();
+    lifeList.get(3).show();
+    lifeList.get(4).show();
   }
+
+  if (lifeList.get(0).getHealth() == 4)
+  {
+    lifeList.get(0).show();
+    lifeList.get(1).show();
+    lifeList.get(2).show();
+    lifeList.get(3).show();
+  }
+
+  if (lifeList.get(0).getHealth() == 3)
+  {
+    lifeList.get(0).show();
+    lifeList.get(1).show();
+    lifeList.get(2).show();
+  }
+
+  if (lifeList.get(0).getHealth() == 2)
+  {
+    lifeList.get(0).show();
+    lifeList.get(1).show();
+  }
+
+  if (lifeList.get(0).getHealth() == 1)
+  {
+    lifeList.get(0).show();
+  }
+  
 
 }
 

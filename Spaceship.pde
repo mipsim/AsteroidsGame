@@ -3,6 +3,7 @@
 
 class SpaceShip extends Floater  
 { 
+  private int health;
   private boolean inHyperSpace;
   private boolean collision;
 
@@ -22,6 +23,7 @@ class SpaceShip extends Floater
 
     inHyperSpace = false;
     collision = false;
+    health = 5;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -37,6 +39,8 @@ class SpaceShip extends Floater
   public void setColor(int x) {myColor = x;}
   public void setHyperStatus (boolean x) {inHyperSpace = x;} 
   public boolean getHyperStatus () {return inHyperSpace;} 
+  public int getHealth() {return health;}
+  public void setHealth(int x) {health = x;}
 
 }
 
