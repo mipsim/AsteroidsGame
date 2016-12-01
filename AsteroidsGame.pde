@@ -11,6 +11,8 @@ ArrayList <SpaceShip> lifeList = new ArrayList <SpaceShip>();
 
 ArrayList <Bullet> bulletList = new ArrayList <Bullet>();
 
+boolean gameStart = false;
+
 
 /////////////////////////////////////////////////////////////////--SETUP--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,8 +21,7 @@ public void setup()
 {
   size(1080,750);
 
-  //INTERFACE//
-
+  //HUD//
   for (int i = 0; i < 5; i++)
   {
     lifeList.add(new SpaceShip());
@@ -49,6 +50,7 @@ public void setup()
   player.setY(375);
   player.setDirectionX(0);
   player.setDirectionY(0); 
+  player.setPointDirection(0);
 
 
   //ASTEROIDS//
@@ -75,22 +77,30 @@ public void draw()
 
   keyTyped();
 
+  //If holding powerup:
+  //mousePressed();
+
 
   //STARS//
   for (Star starTemp : stars)
   {
     starTemp.show();
-    starTemp.move();
+    if (player.getDead() == false)
+    { starTemp.move(); }
   }  
   
 
   //BULLETS//
-  for(Bullet bullets : bulletList)
+  if ( player.getDead() == false)
   {
-    bullets.setBulletRotation(100);
-    bullets.show();
-    bullets.move();
+    for(Bullet bullets : bulletList)
+    {
+      bullets.setBulletRotation(100);
+      bullets.show();
+      bullets.move();
+    }
   }
+  
 
 
   //SHIP//
@@ -107,65 +117,36 @@ public void draw()
 
 
   //ASTEROIDS//
-  for(int i = 0; i < astList.size(); i++) 
+  if (gameStart == false)
   {
-    //Prevents player from losing/taking damage if touches asteroid while in hyperspace
-    if (player.getHyperStatus() == false && dist((int)player.getX(), (int)player.getY(), 
-       (int)astList.get(i).getX(), (int)astList.get(i).getY()) < 35 )
+    textSize(150);
+    fill(255);
+    text("PRESS ENTER", 75, 650); 
+  }
+
+  else 
+  {
+    for(int i = 0; i < astList.size(); i++) 
     {
-      astList.remove(i);
-      i--;
-      lifeList.get(0).setHealth(lifeList.get(0).getHealth()-1);
+      //Prevents player from losing/taking damage if touches asteroid while in hyperspace
+      if (player.getHyperStatus() == false && dist((int)player.getX(), (int)player.getY(), 
+        (int)astList.get(i).getX(), (int)astList.get(i).getY()) < 35 )
+      {
+        astList.remove(i);
+        i--;
+        lifeList.get(0).setHealth(lifeList.get(0).getHealth()-1);
+      }
+      else 
+      {
+        astList.get(i).show();
+        if (player.getDead() == false)
+        { astList.get(i).move(); }
+      }
     }
-
-    else 
-    {
-      astList.get(i).show();
-      astList.get(i).move();
-    }
   }
 
-  //INTERFACE//
-  textSize(52);
-  fill(255);
-  text("HEALTH", 15, 60); 
-
-  if (lifeList.get(0).getHealth() == 5)
-  {
-    lifeList.get(0).show();
-    lifeList.get(1).show();
-    lifeList.get(2).show();
-    lifeList.get(3).show();
-    lifeList.get(4).show();
-  }
-
-  if (lifeList.get(0).getHealth() == 4)
-  {
-    lifeList.get(0).show();
-    lifeList.get(1).show();
-    lifeList.get(2).show();
-    lifeList.get(3).show();
-  }
-
-  if (lifeList.get(0).getHealth() == 3)
-  {
-    lifeList.get(0).show();
-    lifeList.get(1).show();
-    lifeList.get(2).show();
-  }
-
-  if (lifeList.get(0).getHealth() == 2)
-  {
-    lifeList.get(0).show();
-    lifeList.get(1).show();
-  }
-
-  if (lifeList.get(0).getHealth() == 1)
-  {
-    lifeList.get(0).show();
-  }
-  
-
+  //HUD//
+  headsUpDisplay();
 }
 
 
@@ -175,42 +156,117 @@ public void draw()
 public void keyTyped()
 {
   if (keyPressed == true)
-   {
-    if( key == 'w' || key == 'W' )
-    {  player.accelerate(0.05); }
+  {
+
+    if( key == 'g' &&  gameStart == false || key == 'G' && gameStart == false)
+    {  
+      gameStart = true;
+      player.setX(540);
+      player.setY(375);
+      
+    }
+
+    if (gameStart == true && player.getDead() == false)
+    {
+      
+      if( key == 'w' || key == 'W' )
+      {  player.accelerate(0.05); }
     
 
-    else if( key == 's' || key == 'S')
-    {
-      player.setHyperStatus(true);
-      player.setDirectionX(0);
-      player.setDirectionY(0);
-      player.setPointDirection((int)(Math.random()*360));
-      player.setX((int)(Math.random()*1080));
-      player.setY((int)(Math.random()*750));
+      else if( key == 's' || key == 'S')
+      {
+        player.setHyperStatus(true);
+        player.setDirectionX(0);
+        player.setDirectionY(0);
+        player.setPointDirection((int)(Math.random()*360));
+        player.setX((int)(Math.random()*1080));
+        player.setY((int)(Math.random()*750));
+      }
+      
+      else if( key == 'd' || key == 'D')
+      {  player.rotate(10); }
+
+
+      else if( key == 'a' || key == 'A')
+      {  player.rotate(-10); }
     }
-   
-
-    else if( key == 'd' || key == 'D')
-    {  player.rotate(10); }
-
-
-    else if( key == 'a' || key == 'A')
-    {  player.rotate(-10); }
   }
+
   else 
     {
       player.setHyperStatus(false);
     }
+
 }
 
 
 public void mousePressed()
 {
   //prevent shooting while in hyperspace
-  if (mousePressed == true && player.getHyperStatus() == false)
+  if (mousePressed == true && player.getHyperStatus() == false && gameStart == true)
   {  bulletList.add(new Bullet(player)); }
 }
 
+
+public void headsUpDisplay()
+{
+  if (gameStart == true)
+  {
+    if ( player.getDead() == false) 
+    {
+      textSize(52);
+      fill(255);
+      text("HEALTH", 15, 60); 
+    }
+    
+
+    if (lifeList.get(0).getHealth() == 5)
+    {
+      lifeList.get(0).show();
+      lifeList.get(1).show();
+      lifeList.get(2).show();
+      lifeList.get(3).show();
+      lifeList.get(4).show();
+    }
+
+    if (lifeList.get(0).getHealth() == 4)
+    {
+      lifeList.get(0).show();
+      lifeList.get(1).show();
+      lifeList.get(2).show();
+      lifeList.get(3).show();
+    }
+
+    if (lifeList.get(0).getHealth() == 3)
+    {
+      lifeList.get(0).show();
+      lifeList.get(1).show();
+      lifeList.get(2).show();
+    }
+
+    if (lifeList.get(0).getHealth() == 2)
+    {
+      lifeList.get(0).show();
+      lifeList.get(1).show();
+    }
+
+   if (lifeList.get(0).getHealth() == 1)
+   {
+      lifeList.get(0).show();
+   }
+
+   if (lifeList.get(0).getHealth() == 0)
+   {
+      player.setDead(true);
+      player.setDirectionX(0);
+      player.setDirectionY(0);
+      player.setPointDirection(0);
+      player.setColor(0);
+      textSize(150);
+      fill(255);
+      text("GAME OVER", 110, 450);
+   }
+  }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
