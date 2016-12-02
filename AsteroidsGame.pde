@@ -13,6 +13,8 @@ ArrayList <Bullet> bulletList = new ArrayList <Bullet>();
 
 boolean gameStart = false;
 
+int score;
+
 
 /////////////////////////////////////////////////////////////////--SETUP--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,6 +37,8 @@ public void setup()
   lifeList.get(2).setX(110);
   lifeList.get(3).setX(150);
   lifeList.get(4).setX(190);
+
+  score = 0000;
   
 
   //STARS//
@@ -134,6 +138,7 @@ public void draw()
       {
         astList.remove(i);
         i--;
+        score = score - 100;
         lifeList.get(0).setHealth(lifeList.get(0).getHealth()-1);
       }
       else 
@@ -144,6 +149,22 @@ public void draw()
       }
     }
   }
+
+  //Removes bullets and asteroids on collision
+  for (int i = 0; i < astList.size(); i++)
+  {
+    for (int j = 0; j < bulletList.size(); j++)
+    {
+      if (dist((int)bulletList.get(j).getX(), (int)bulletList.get(j).getY(), (int)astList.get(i).getX(), (int)astList.get(i).getY()) < 25 )
+      {
+        bulletList.remove(bulletList.get(j));
+        astList.remove(astList.get(i));
+        score = score + 100;
+        break;
+      }
+    }
+  }
+    
 
   //HUD//
   headsUpDisplay();
@@ -216,7 +237,10 @@ public void headsUpDisplay()
     {
       textSize(52);
       fill(255);
-      text("HEALTH", 15, 60); 
+      text("HEALTH", 15, 60);
+      text("SCORE: " + score, 700, 60);
+      if (score < 0)
+      { score = 0; }
     }
     
 
