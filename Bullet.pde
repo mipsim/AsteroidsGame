@@ -38,18 +38,21 @@ class Bullet extends Floater
 
   public void show()
   {
-    fill(0,255,255);
-    noStroke();               
-    double dRadians = myPointDirection*(Math.PI/180);                 
-    int xRotatedTranslated, yRotatedTranslated;    
-    beginShape();         
-    for(int nI = 0; nI < corners; nI++)    
-    {     
-      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
-      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
-      vertex(xRotatedTranslated,yRotatedTranslated);    
-    }   
-    endShape(CLOSE);
+    if (myCenterY > 100)
+    {
+      fill(0,255,255);
+      noStroke();               
+      double dRadians = myPointDirection*(Math.PI/180);                 
+      int xRotatedTranslated, yRotatedTranslated;    
+      beginShape();         
+      for(int nI = 0; nI < corners; nI++)    
+      {     
+        xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+        yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+        vertex(xRotatedTranslated,yRotatedTranslated);    
+      }   
+      endShape(CLOSE);
+    }
   }
 
   public void move()

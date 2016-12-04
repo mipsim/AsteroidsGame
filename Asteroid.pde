@@ -43,7 +43,25 @@ class Asteroid extends Floater
 
     rotate(astRotation);
 
-    super.move();   
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+   
+    if(myCenterX >width)
+    {     
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 110;    
+    }   
+    else if (myCenterY < 110)
+    {     
+      myCenterY = height;    
+    }  
   }
 }
 

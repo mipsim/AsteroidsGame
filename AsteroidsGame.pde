@@ -15,6 +15,8 @@ boolean gameStart = false;
 
 int score;
 
+PowerUp item = new PowerUp();
+
 
 /////////////////////////////////////////////////////////////////--SETUP--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,16 +29,16 @@ public void setup()
   for (int i = 0; i < 5; i++)
   {
     lifeList.add(new SpaceShip());
-    lifeList.get(i).setY(90);
+    lifeList.get(i).setY(52);
     lifeList.get(i).setDirectionX(0);
     lifeList.get(i).setDirectionY(0);
   }
 
-  lifeList.get(0).setX(30);
-  lifeList.get(1).setX(70);
-  lifeList.get(2).setX(110);
-  lifeList.get(3).setX(150);
-  lifeList.get(4).setX(190);
+  lifeList.get(0).setX(310);
+  lifeList.get(1).setX(360);
+  lifeList.get(2).setX(410);
+  lifeList.get(3).setX(460);
+  lifeList.get(4).setX(510);
 
   score = 0000;
   
@@ -68,6 +70,12 @@ public void setup()
     astList.get(i).setDirectionY((int)(Math.random()*3-1));
     if (astList.get(i).getDirectionY() == 0) {astList.get(i).setDirectionY(-1);}
   }
+
+
+  //POWERUP//
+  item.setX((int)(Math.random()*1060 + 10));
+  item.setY((int)(Math.random()*630 + 110));
+  item.setItemRotation(15);
 }
 
 
@@ -80,9 +88,6 @@ public void draw()
 
 
   keyTyped();
-
-  //If holding powerup:
-  //mousePressed();
 
 
   //STARS//
@@ -136,6 +141,12 @@ public void draw()
       if (player.getHyperStatus() == false && dist((int)player.getX(), (int)player.getY(), 
         (int)astList.get(i).getX(), (int)astList.get(i).getY()) < 35 )
       {
+        //Check for powerup
+        if (player.getPowerStat() == true)
+        {
+          player.setPowerStat(false);
+        }
+
         astList.remove(i);
         i--;
         score = score - 100;
@@ -164,7 +175,31 @@ public void draw()
       }
     }
   }
-    
+  
+  //POWERUP//
+  if (score == 500)
+  { item.setPowerAvail(true); }
+
+  if ( item.getPowerAvail() == true )
+  {
+    item.show();
+    if (player.getDead() == false)
+    { item.move(); }
+  }
+
+  if (player.getHyperStatus() == false && dist((int)player.getX(), (int)player.getY(), 
+      (int)item.getX(), (int)item.getY()) < 35 )
+  {
+    player.setPowerStat(true);
+    item.setPowerAvail(false);
+    item.setX(600);
+    item.setY(52);
+  }
+
+  if (player.getPowerStat() == true)
+  {
+    mousePressed();
+  }
 
   //HUD//
   headsUpDisplay();
@@ -201,7 +236,7 @@ public void keyTyped()
         player.setDirectionY(0);
         player.setPointDirection((int)(Math.random()*360));
         player.setX((int)(Math.random()*1080));
-        player.setY((int)(Math.random()*750));
+        player.setY((int)(Math.random()*640+110));
       }
       
       else if( key == 'd' || key == 'D')
@@ -233,15 +268,15 @@ public void headsUpDisplay()
 {
   if (gameStart == true)
   {
-    if ( player.getDead() == false) 
-    {
-      textSize(52);
-      fill(255);
-      text("HEALTH", 15, 60);
-      text("SCORE: " + score, 700, 60);
-      if (score < 0)
-      { score = 0; }
-    }
+    noStroke();
+    fill(50, 100);
+    rect(0, 0, 1080, 100);
+    textSize(65);
+    fill(255);
+    text("HEALTH", 15, 75);
+    text("SCORE: " + score, 650, 75);
+    if (score < 0)
+    { score = 0; }
     
 
     if (lifeList.get(0).getHealth() == 5)
