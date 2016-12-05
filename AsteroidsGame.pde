@@ -128,9 +128,9 @@ public void draw()
   //ASTEROIDS//
   if (gameStart == false)
   {
-    textSize(150);
+    textSize(100);
     fill(255);
-    text("PRESS ENTER", 75, 650); 
+    text("PRESS ENTER", 540, 85); 
   }
 
   else 
@@ -202,6 +202,7 @@ public void draw()
   }
 
   //HUD//
+  textAlign(CENTER);
   headsUpDisplay();
 }
 
@@ -266,15 +267,16 @@ public void mousePressed()
 
 public void headsUpDisplay()
 {
+  noStroke();
+  fill(150, 100);
+  rect(0, 0, 1080, 100);
+
   if (gameStart == true)
   {
-    noStroke();
-    fill(50, 100);
-    rect(0, 0, 1080, 100);
     textSize(65);
     fill(255);
-    text("HEALTH", 15, 75);
-    text("SCORE: " + score, 650, 75);
+    text("HEALTH", 140, 75);
+    text("SCORE: " + score, 850, 75);
     if (score < 0)
     { score = 0; }
     
