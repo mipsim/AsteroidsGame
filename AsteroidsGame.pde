@@ -26,6 +26,9 @@ public void setup()
   size(1080,750);
 
   //HUD//
+
+   textAlign(CENTER);
+
   for (int i = 0; i < 5; i++)
   {
     lifeList.add(new SpaceShip());
@@ -60,7 +63,7 @@ public void setup()
 
 
   //ASTEROIDS//
-  for (int i = 0; i < 16; i++)
+  for (int i = 0; i < 20; i++)
   {
     astList.add(new Asteroid());
 
@@ -128,9 +131,11 @@ public void draw()
   //ASTEROIDS//
   if (gameStart == false)
   {
-    textSize(100);
     fill(255);
+    textSize(100);
     text("PRESS ENTER", 540, 85); 
+    textSize(180);
+    text("ASTEROIDS", 540, 710); 
   }
 
   else 
@@ -202,7 +207,6 @@ public void draw()
   }
 
   //HUD//
-  textAlign(CENTER);
   headsUpDisplay();
 }
 
@@ -215,7 +219,7 @@ public void keyTyped()
   if (keyPressed == true)
   {
 
-    if( key == 'g' &&  gameStart == false || key == 'G' && gameStart == false)
+    if( key == ENTER &&  gameStart == false ||  key == RETURN &&  gameStart == false )
     {  
       gameStart = true;
       player.setX(540);
