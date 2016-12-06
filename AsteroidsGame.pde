@@ -11,11 +11,15 @@ ArrayList <SpaceShip> lifeList = new ArrayList <SpaceShip>();
 
 ArrayList <Bullet> bulletList = new ArrayList <Bullet>();
 
+ArrayList <AlienBullet> alienBulletList = new ArrayList <AlienBullet>();
+
 boolean gameStart = false;
 
 int score;
 
 PowerUp item = new PowerUp();
+
+Enemy alien = new Enemy();
 
 
 /////////////////////////////////////////////////////////////////--SETUP--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,6 +66,19 @@ public void setup()
   player.setPointDirection(0);
 
 
+  //ENEMY//
+
+  //FIX????//
+  alien.setX(1080);
+  alien.setY((int)(Math.random()*750));
+  alien.setDirectionX((int)(Math.random()*8-5));
+    if (alien.getDirectionX() == 0) {alien.setDirectionX(-1);}
+
+    alien.setDirectionY((int)(Math.random()*8-5));
+    if (alien.getDirectionY() == 0) {alien.setDirectionY(-1);}
+  alien.setDead(true);
+
+
   //ASTEROIDS//
   for (int i = 0; i < 20; i++)
   {
@@ -77,7 +94,7 @@ public void setup()
 
   //POWERUP//
   item.setX((int)(Math.random()*1060 + 10));
-  item.setY((int)(Math.random()*630 + 110));
+  item.setY((int)(Math.random()*750 + 110));
   item.setItemRotation(15);
 }
 
@@ -113,6 +130,36 @@ public void draw()
     }
   }
   
+   //ALIENBULLETS//
+  if ( player.getDead() == false)
+  {
+    for(AlienBullet laser : alienBulletList)
+    {
+      if( alien.getDead() == false )
+      laser.setBulletRotation(100);
+      laser.show();
+      laser.move();
+    }
+  }
+
+  for(int i = 0; i < alienBulletList.size(); i++) 
+  {
+    //Prevents player from losing/taking damage if touches asteroid while in hyperspace
+    if (player.getHyperStatus() == false && dist((int)player.getX(), (int)player.getY(), 
+       (int)alienBulletList.get(i).getX(), (int)alienBulletList.get(i).getY()) < 35 )
+    {
+      //Check for powerup
+      if (player.getPowerStat() == true)
+      {
+        player.setPowerStat(false);
+      }
+
+      alienBulletList.remove(i);
+        i--;
+        score = score - 300;
+        lifeList.get(0).setHealth(lifeList.get(0).getHealth()-1);
+    }
+  }
 
 
   //SHIP//
@@ -126,6 +173,23 @@ public void draw()
   {
     player.setColor(255);
   }
+
+
+  //ENEMY//
+  if (score == 700)
+  { alien.setDead(false); }
+
+  if (alien.getDead() == false)
+  {
+    alien.show();
+
+    if (player.getDead() == false)
+    { alien.move(); }
+  }
+  alien.setPointDirection(-(int)(player.getPointDirection()));
+
+
+
 
 
   //ASTEROIDS//
@@ -182,7 +246,7 @@ public void draw()
   }
   
   //POWERUP//
-  if (score == 500)
+  if (score == 1100)
   { item.setPowerAvail(true); }
 
   if ( item.getPowerAvail() == true )
@@ -265,7 +329,9 @@ public void mousePressed()
 {
   //prevent shooting while in hyperspace
   if (mousePressed == true && player.getHyperStatus() == false && gameStart == true)
-  {  bulletList.add(new Bullet(player)); }
+  {  bulletList.add(new Bullet(player)); 
+     alienBulletList.add(new AlienBullet(alien));
+   }
 }
 
 
@@ -320,7 +386,7 @@ public void headsUpDisplay()
       lifeList.get(0).show();
    }
 
-   if (lifeList.get(0).getHealth() == 0)
+   if (lifeList.get(0).getHealth() <= 0)
    {
       player.setDead(true);
       player.setDirectionX(0);
@@ -329,7 +395,7 @@ public void headsUpDisplay()
       player.setColor(0);
       textSize(150);
       fill(255);
-      text("GAME OVER", 110, 450);
+      text("GAME OVER", 540, 450);
    }
   }
 }
