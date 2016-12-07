@@ -68,7 +68,7 @@ public void setup()
 
   //ENEMY//
 
-  //FIX????//
+  //FIX//
   alien.setX(1080);
   alien.setY((int)(Math.random()*750));
   alien.setDirectionX((int)(Math.random()*8-5));
