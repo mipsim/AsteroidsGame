@@ -6,6 +6,7 @@ class Enemy extends Floater
   private int health;
   private boolean collision;
   private boolean dead;
+  private int enemyTimer;
 
   public Enemy()
   {
@@ -29,6 +30,7 @@ class Enemy extends Floater
     collision = false;
     health = 10;
     dead = true;
+    enemyTimer = 0;
   }
 
   public void setX(int x) {myCenterX = x;}
@@ -46,6 +48,8 @@ class Enemy extends Floater
   public void setHealth(int x) {health = x;}
   public boolean getDead() {return dead;}
   public void setDead(boolean x) {dead = x;}
+  public int getEnemyTimer() {return enemyTimer;}
+  public void setEnemyTimer(int x) {enemyTimer = x;}
 
   public void move ()   //move the floater in the current direction of travel
   {      

@@ -67,8 +67,6 @@ public void setup()
 
 
   //ENEMY//
-
-  //FIX//
   alien.setX(1080);
   alien.setY((int)(Math.random()*750));
   alien.setDirectionX((int)(Math.random()*8-5));
@@ -77,6 +75,8 @@ public void setup()
     alien.setDirectionY((int)(Math.random()*8-5));
     if (alien.getDirectionY() == 0) {alien.setDirectionY(-1);}
   alien.setDead(true);
+
+  alien.setEnemyTimer(0);
 
 
   //ASTEROIDS//
@@ -131,14 +131,17 @@ public void draw()
   }
   
    //ALIENBULLETS//
-  if ( player.getDead() == false)
+  if ( alien.getDead() == false)
   {
     for(AlienBullet laser : alienBulletList)
     {
       if( alien.getDead() == false )
       laser.setBulletRotation(100);
       laser.show();
-      laser.move();
+      if (player.getDead() == false)
+      {
+        laser.move();
+      }
     }
   }
 
@@ -186,10 +189,13 @@ public void draw()
     if (player.getDead() == false)
     { alien.move(); }
   }
-  alien.setPointDirection(-(int)(player.getPointDirection()));
+  alien.setPointDirection((int)(player.getPointDirection()));
 
-
-
+  alien.setEnemyTimer(alien.getEnemyTimer()+1);
+  if (alien.getEnemyTimer()%50 == 0 && player.getDead() == false)
+  {
+    alienBulletList.add(new AlienBullet(alien));
+  }
 
 
   //ASTEROIDS//
@@ -329,9 +335,9 @@ public void mousePressed()
 {
   //prevent shooting while in hyperspace
   if (mousePressed == true && player.getHyperStatus() == false && gameStart == true)
-  {  bulletList.add(new Bullet(player)); 
-     alienBulletList.add(new AlienBullet(alien));
-   }
+  {  
+    bulletList.add(new Bullet(player));  
+  }
 }
 
 
@@ -392,6 +398,8 @@ public void headsUpDisplay()
       player.setDirectionX(0);
       player.setDirectionY(0);
       player.setPointDirection(0);
+      player.setX(0);
+      player.setY(0);
       player.setColor(0);
       textSize(150);
       fill(255);
