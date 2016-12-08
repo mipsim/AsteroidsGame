@@ -189,13 +189,30 @@ public void draw()
     if (player.getDead() == false)
     { alien.move(); }
   }
-  alien.setPointDirection((int)(player.getPointDirection()));
+
+  alien.rotate(1);
 
   alien.setEnemyTimer(alien.getEnemyTimer()+1);
   if (alien.getEnemyTimer()%50 == 0 && player.getDead() == false)
   {
     alienBulletList.add(new AlienBullet(alien));
   }
+
+  for (int i = 0; i < bulletList.size(); i++)
+    {
+      if (dist((int)bulletList.get(i).getX(), (int)bulletList.get(i).getY(), (int)alien.getX(), (int)alien.getY()) < 25 )
+      {
+        bulletList.remove(bulletList.get(i));
+        if (alien.getHealth()==0)
+        {
+          score = score + 1000;
+          alien.setDead(true);
+        }
+        alien.setHealth(alien.getHealth()-1);
+        break;
+      }
+    }
+
 
 
   //ASTEROIDS//
